@@ -69,9 +69,6 @@ func (n LinkedList) printLinkedList() {
 	fmt.Println()
 }
 
-// to do
-// FindAll (slice append)
-
 func (n LinkedList) FindAll(data int) []Node {
 	// Finds all nodes by the specified data and returns a slice of nodes
 	var nodes []Node
@@ -85,8 +82,8 @@ func (n LinkedList) FindAll(data int) []Node {
 	return nodes
 }
 
-// Remove (bool)
 func (n *LinkedList) Remove(data int) bool {
+	// Removes a node with the specified data and returns bool value
 	if n.Find(data) == nil || n.head == nil {
 		return false
 	} else {
@@ -122,20 +119,47 @@ func (n *LinkedList) Remove(data int) bool {
 
 }
 
-// RemoveAll
-// InsertAfter
+func (n *LinkedList) RemoveAll(data int) {
+	// Removes all nodes with the specified data
+	length := n.Count()
+	for i := 0; i < length; i++ {
+		n.Remove(data)
+	}
+}
+
+func (n *LinkedList) InsertAfter(nodeAfter *Node, NodeToInsert *Node) {
+	// Inserts node after the specified one
+	currentNode := n.head
+	if nodeAfter == nil && n.head == nil {
+		NodeToInsert.next = n.head
+		n.head = NodeToInsert
+		n.tail = n.head
+	}
+	for currentNode != nil {
+		if currentNode.data == nodeAfter.data {
+			nodeAfter.next = currentNode.next
+			NodeToInsert.next = nodeAfter.next
+			currentNode.next = NodeToInsert
+			if n.tail.next != nil {
+				n.tail = currentNode.next
+			}
+		}
+		currentNode = currentNode.next
+	}
+}
 
 func main() {
 	var testList LinkedList
 	testNode := Node{data: 10}
 	testNode2 := Node{data: 20}
 	testNode3 := Node{data: 30}
-	testNode4 := Node{data: 30}
+	testNode4 := Node{data: 40}
 
 	testList.addInTail(&testNode)
 	testList.addInTail(&testNode2)
 	testList.addInTail(&testNode3)
-	testList.addInTail(&testNode4)
+	testList.InsertAfter(&testNode2, &testNode4)
+	//testList.addInTail(&testNode4)
 
 	fmt.Println("initial list:")
 	testList.printLinkedList()
@@ -143,12 +167,12 @@ func main() {
 	fmt.Println("FindAll result:")
 	fmt.Println(testList.FindAll(30))
 	fmt.Println("Remove '30' value")
-	fmt.Println(testList.Remove(30))
+	testList.RemoveAll(30)
 	fmt.Println("list after remove:")
 	testList.printLinkedList()
 	fmt.Println(testList.Count())
 
-	if testList.head.data == 10 && testList.head.next.data == 20 && testList.head.next.next.data == 30 {
+	if testList.head.data == 10 && testList.head.next.data == 20 {
 		fmt.Println("Linked list is OK")
 	} else {
 		fmt.Println("Linked list is incorrect!")
