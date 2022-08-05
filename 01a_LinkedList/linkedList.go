@@ -1,8 +1,9 @@
 package main
 
 import (
+    "os"
+    "reflect"
 	"errors"
-	"fmt"
 )
 
 type Node struct {
@@ -140,36 +141,4 @@ func (l *LinkedList) InsertFirst(first Node) {
 func (l *LinkedList) Clean() {
 	l.head = nil
 	l.tail = nil
-}
-
-func (n LinkedList) printLinkedList() {
-	// Prints out linked list
-	currentNode := n.head
-	for currentNode != nil {
-		fmt.Print("\nnode data: ", currentNode.value, "\nnode ptr: ", currentNode.next)
-		currentNode = currentNode.next
-	}
-	fmt.Println()
-}
-
-func main() {
-
-	var testList LinkedList
-	testNode := Node{value: 10}
-	testNode2 := Node{value: 20}
-	testNode3 := Node{value: 500}
-	testList.AddInTail(testNode)
-	testList.AddInTail(testNode)
-	testList.AddInTail(testNode)
-	testList.AddInTail(testNode2)
-	//testList.AddInTail(testNode3)
-	testList.InsertFirst(testNode3)
-	fmt.Println(testList.Count())
-	testList.printLinkedList()
-	fmt.Println("==================")
-	testList.Delete(10, true)
-	fmt.Println(testList.Count())
-	testList.printLinkedList()
-	//fmt.Println(testList.FindAll(10))
-	//fmt.Println(testList.Count())
 }
