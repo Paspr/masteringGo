@@ -3,7 +3,7 @@ package main
 import (
     "os"
     "reflect"
-	"errors"
+    "errors"
 )
 
 type Node struct {
