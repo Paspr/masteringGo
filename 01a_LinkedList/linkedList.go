@@ -66,48 +66,50 @@ func (l *LinkedList) FindAll(n int) []Node {
 
 func (l *LinkedList) Delete(n int, all bool) {
 
-	innerDelete := func(value int) {
+	innerDelete := func(val int) {
+
 		currentNode := l.head
-		var previousNode Node
+		var previousNode *Node
 		for currentNode != nil {
-			if currentNode.value == value {
+			if currentNode.value == val {
 				if l.head.next == nil {
 					l.head = nil
 					l.tail = nil
-					break
+					return
 				}
 				if l.head.value == currentNode.value {
 					l.head = l.head.next
-					break
+					return
 				} else {
 					if currentNode.next == nil {
 						previousNode.next = nil
-						l.tail = &previousNode
-						break
+						l.tail = previousNode
+						return
 					} else {
 						previousNode.next = currentNode.next
-						break
+						return
 					}
 				}
 
 			}
-			previousNode = *currentNode
+			previousNode = currentNode
 			currentNode = currentNode.next
 		}
-
+		return
 	}
 
-	if !all {
+	if l.head == nil {
+		return
+	} else if !all {
 		innerDelete(n)
-
 	} else {
 		length := l.Count()
 		for i := 0; i < length; i++ {
 			innerDelete(n)
 
 		}
-	}
 
+	}
 }
 
 func (l *LinkedList) Insert(after *Node, add Node) {
