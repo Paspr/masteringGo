@@ -134,9 +134,9 @@ func (l *LinkedList) Insert(after *Node, add Node) {
 }
 
 func (l *LinkedList) InsertFirst(first Node) {
-	currentNode := l.head
-	first.next = currentNode
+	first.next = l.head
 	l.head = &first
+	l.tail = l.head
 
 }
 
