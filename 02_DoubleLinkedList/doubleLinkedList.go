@@ -128,12 +128,17 @@ func (l *LinkedList2) Insert(after *Node, add Node) {
 }
 
 func (l *LinkedList2) InsertFirst(first Node) {
-	first.next = l.head
-	first.prev = nil
-	if l.head != nil {
+	if l.head == nil {
+		l.tail = &first
+		l.tail.next = nil
+		l.tail.prev = nil
+
+	} else {
 		l.head.prev = &first
+		first.next = l.head
 	}
 	l.head = &first
+	l.head.prev = nil
 
 }
 
