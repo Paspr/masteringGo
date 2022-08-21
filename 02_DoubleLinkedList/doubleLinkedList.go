@@ -117,14 +117,19 @@ func (l *LinkedList2) Insert(after *Node, add Node) {
 	}
 	for currentNode != nil {
 		if currentNode.value == after.value {
-			after.next = currentNode.next
-			add.next = after.next
-			add.prev = currentNode
-			currentNode.next = &add
+			if currentNode.next == nil {
+				l.AddInTail(add)
+				break
+			}
+			currentNode.prev.next = &add
+			add.prev = currentNode.prev
+			add.next = currentNode
+			currentNode.prev = &add
+			break
+
 		}
 		currentNode = currentNode.next
 	}
-
 }
 
 func (l *LinkedList2) InsertFirst(first Node) {
