@@ -45,6 +45,6 @@ func (bf *BloomFilter) Add(s string) {
 func (bf *BloomFilter) IsValue(s string) bool {
 	index1 := bf.Hash1(s)
 	index2 := bf.Hash2(s)
-	return bf.barray[index1]&1 != 0 && bf.barray[index2]&1 != 0
+	return bf.barray[index1] != 0 && bf.barray[index2] != 0
 
 }
