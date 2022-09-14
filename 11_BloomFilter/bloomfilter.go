@@ -8,7 +8,7 @@ import (
 // битовый массив длиной f_len ...
 type BloomFilter struct {
 	filter_len int
-	barray     []bool
+	barray     []uint8
 }
 
 // хэш-функции
@@ -36,8 +36,8 @@ func (bf *BloomFilter) Hash2(s string) int {
 func (bf *BloomFilter) Add(s string) {
 	index1 := bf.Hash1(s)
 	index2 := bf.Hash2(s)
-	bf.barray[index1] = true
-	bf.barray[index2] = true
+	bf.barray[index1] |= 1
+	bf.barray[index2] |= 1
 
 }
 
@@ -45,6 +45,6 @@ func (bf *BloomFilter) Add(s string) {
 func (bf *BloomFilter) IsValue(s string) bool {
 	index1 := bf.Hash1(s)
 	index2 := bf.Hash2(s)
-	return bf.barray[index1] && bf.barray[index2]
+	return bf.barray[index1]&1 != 0 && bf.barray[index2]&1 != 0
 
 }
