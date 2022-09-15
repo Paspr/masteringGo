@@ -43,6 +43,9 @@ func (bf *BloomFilter) Add(s string) {
 
 // проверка, имеется ли строка s в фильтре
 func (bf *BloomFilter) IsValue(s string) bool {
+	if len(bf.barray) == 0 {
+		return false
+	}
 	index1 := bf.Hash1(s)
 	index2 := bf.Hash2(s)
 	return bf.barray[index1]&1 != 0 && bf.barray[index2]&1 != 0
