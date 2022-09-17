@@ -13,125 +13,94 @@ func newBF() BloomFilter {
 
 func TestHash1(t *testing.T) {
 	bf := newBF()
-	testCases := []struct {
-		name  string
-		input string
-		want  int
-	}{
-		{
-			name:  "String is not empty",
-			input: "0123456789",
-			want:  13,
-		},
-		{
-			name:  "String is empty",
-			input: "",
-			want:  0,
-		},
-	}
-
-	for _, testCase := range testCases {
-		t.Run(testCase.name, func(t *testing.T) {
-			got := bf.Hash1(testCase.input)
-			if testCase.want != got {
-				t.Errorf("got: %d, want: %d", got, testCase.want)
-			}
-		})
-	}
+	t.Run("String is not empty", func(t *testing.T) {
+		str := "0123456789"
+		got := bf.Hash1(str)
+		want := 13
+		if got != want {
+			t.Errorf("got: %d, want: %d, given %v", got, want, str)
+		}
+	})
+	t.Run("String is empty", func(t *testing.T) {
+		str := ""
+		got := bf.Hash1(str)
+		want := 0
+		if got != want {
+			t.Errorf("got: %d, want: %d, given %v", got, want, str)
+		}
+	})
 }
 
 func TestHash2(t *testing.T) {
 	bf := newBF()
-	testCases := []struct {
-		name  string
-		input string
-		want  int
-	}{
-		{
-			name:  "String is not empty",
-			input: "0123456789",
-			want:  5,
-		},
-		{
-			name:  "String is empty",
-			input: "",
-			want:  0,
-		},
-	}
-
-	for _, testCase := range testCases {
-		t.Run(testCase.name, func(t *testing.T) {
-			got := bf.Hash2(testCase.input)
-			if testCase.want != got {
-				t.Errorf("got: %d, want: %d", got, testCase.want)
-			}
-		})
-	}
+	t.Run("String is not empty", func(t *testing.T) {
+		str := "0123456789"
+		got := bf.Hash2(str)
+		want := 5
+		if got != want {
+			t.Errorf("got: %d, want: %d, given %v", got, want, str)
+		}
+	})
+	t.Run("String is empty", func(t *testing.T) {
+		str := ""
+		got := bf.Hash2(str)
+		want := 0
+		if got != want {
+			t.Errorf("got: %d, want: %d, given %v", got, want, str)
+		}
+	})
 }
 
 func TestAdd(t *testing.T) {
 	bf := newBF()
-	testCases := []struct {
-		name  string
-		input string
-		want  bool
-	}{
-		{
-			name:  "String is not empty",
-			input: "0123456789",
-			want:  true,
-		},
-	}
-
-	for _, testCase := range testCases {
-		t.Run(testCase.name, func(t *testing.T) {
-			bf.Add(testCase.input)
-			got := bf.barray[5]&1 != 0 && bf.barray[13]&1 != 0
-			if testCase.want != got {
-				t.Errorf("got: %v, want: %v", got, testCase.want)
-			}
-		})
-	}
+	t.Run("Add string", func(t *testing.T) {
+		str := "0123456789"
+		bf.Add(str)
+		got := bf.barray[5]&1 != 0 && bf.barray[13]&1 != 0
+		want := true
+		if got != want {
+			t.Errorf("got: %v, want: %v given %v", got, want, str)
+		}
+	})
 }
 
 func TestIsValue(t *testing.T) {
+	t.Run("Filter is empty", func(t *testing.T) {
+		str := "0123456789"
+		bf := BloomFilter{filter_len: 32}
+		got := bf.IsValue(str)
+		want := false
+		if got != want {
+			t.Errorf("got: %v, want: %v given %v", got, want, str)
+		}
+	})
 	bf := newBF()
-	testCases := []struct {
-		name  string
-		input string
-		want  bool
-	}{
-		{
-			name:  "String is in filter",
-			input: "0123456789",
-			want:  true,
-		},
-		{
-			name:  "String is in filter",
-			input: "1234567890",
-			want:  true,
-		},
-		{
-			name:  "String is in filter",
-			input: "2345678901",
-			want:  true,
-		},
-		{
-			name:  "String is not in filter (false positive)",
-			input: "3456789012",
-			want:  true,
-		},
-	}
+	t.Run("String is in filter", func(t *testing.T) {
+		str := "1234567890"
+		bf.Add(str)
+		got := bf.IsValue(str)
+		want := true
+		if got != want {
+			t.Errorf("got: %v, want: %v given %v", got, want, str)
+		}
+	})
 
-	for _, testCase := range testCases {
-		t.Run(testCase.name, func(t *testing.T) {
-			if testCase.input != "3456789012" {
-				bf.Add(testCase.input)
-			}
-			got := bf.IsValue(testCase.input)
-			if testCase.want != got {
-				t.Errorf("got: %v, want: %v", got, testCase.want)
-			}
-		})
-	}
+	t.Run("String is in filter", func(t *testing.T) {
+		str := "2345678901"
+		bf.Add(str)
+		got := bf.IsValue(str)
+		want := true
+		if got != want {
+			t.Errorf("got: %v, want: %v given %v", got, want, str)
+		}
+	})
+
+	t.Run("String is not in filter (false positive)", func(t *testing.T) {
+		str := "3456789012"
+		got := bf.IsValue(str)
+		want := true
+		if got != want {
+			t.Errorf("got: %v, want: %v given %v", got, want, str)
+		}
+	})
 }
