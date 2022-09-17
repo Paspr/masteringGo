@@ -1,10 +1,10 @@
 package main
 
-/*
+
 import (
 	"os"
 )
-*/
+
 // битовый массив длиной f_len ...
 type BloomFilter struct {
 	filter_len int
