@@ -52,8 +52,19 @@ func TestHash2(t *testing.T) {
 }
 
 func TestAdd(t *testing.T) {
-	bf := newBF()
+	t.Run("Add string into empty filter", func(t *testing.T) {
+		str := "3456789012"
+		bf := BloomFilter{filter_len: 32}
+		bf.Add(str)
+		got := bf.barray[27]&1 != 0 && bf.barray[29]&1 != 0
+		want := true
+		if got != want {
+			t.Errorf("got: %v, want: %v given %v", got, want, str)
+		}
+	})
+
 	t.Run("Add string", func(t *testing.T) {
+		bf := newBF()
 		str := "0123456789"
 		bf.Add(str)
 		got := bf.barray[5]&1 != 0 && bf.barray[13]&1 != 0

@@ -1,10 +1,10 @@
 package main
 
-
+/*
 import (
 	"os"
 )
-
+*/
 // битовый массив длиной f_len ...
 type BloomFilter struct {
 	filter_len int
@@ -34,6 +34,9 @@ func (bf *BloomFilter) Hash2(s string) int {
 
 // добавляем строку s в фильтр
 func (bf *BloomFilter) Add(s string) {
+	if len(bf.barray) == 0 {
+		bf.barray = make([]uint8, bf.filter_len)
+	}
 	index1 := bf.Hash1(s)
 	index2 := bf.Hash2(s)
 	bf.barray[index1] |= 1
